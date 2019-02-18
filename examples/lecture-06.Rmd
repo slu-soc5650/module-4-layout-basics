@@ -48,6 +48,8 @@ Then, include an outline of the key components of your project. Document what is
 * `data/` - both shapefiles needed for the lab
 * `docs/` - the lab notebook
 * `results/` - the two maps required as final outputs
+    * `map-01.png` - map one, created with `ggplot2`
+    * `map-02.pdf` - map two, creted with `tmap`
 ```
 
 ## Load Data (Lecture-01 Review)
