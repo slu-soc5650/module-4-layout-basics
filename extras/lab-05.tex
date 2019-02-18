@@ -1,0 +1,107 @@
+\documentclass{tufte-handout}
+
+\usepackage{xcolor}
+
+% set image attributes:
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+% set hyperlink attributes
+\hypersetup{colorlinks}
+
+% set table attributes
+\usepackage{tabu}
+\usepackage{booktabs}
+
+% set list attributes:
+\usepackage{enumerate}
+\usepackage{enumitem}
+
+
+% ========================================================
+
+% define the title
+\title{SOC 4650/5650: Lab-05 - Mapping Structures at Risk of Severe Weather Using R}
+\author{Christopher Prener, Ph.D.}
+\date{Spring 2019}
+% =======================================================
+\begin{document}
+% =======================================================
+\maketitle % generates the title
+% =======================================================
+
+\section{Directions}
+Using data from the \texttt{data/lab-05/} folder available in the \texttt{lecture-06} repository, create several maps using RStudio. Your entire project folder system should be uploaded to GitHub by Monday, February 25\textsuperscript{th} at 4:15pm.
+
+\vspace{5mm}
+\section{Analysis Development}
+The goal of this section is to create a self contained project directory with all of the data, code, map documents, results, and documentation a project needs.
+
+\vspace{3mm}
+\subsection{Download Data}
+\begin{enumerate}[label=\alph*.]
+\item \textbf{Clone} the \texttt{lecture-06} repository from GitHub using GitHub Desktop.\sidenote{If you are not sure where your GitHub Desktop data has download to on the computer, you can \textsf{right click} on the repo's entry in GitHub Desktop and have it take you to the repo in Windows File Explorer. By default, this should be within your \texttt{Documents/} directory.}
+\end{enumerate}
+
+\vspace{3mm}
+\subsection{Create a Project Folder System}
+\begin{enumerate}[label=\alph*.]
+\setcounter{enumi}{1}
+\item Using RStudio, add an R Project to the \textit{existing} directory in your assignments repository named \texttt{Lab-05}. To do this, you will want to go to: \textsf{File $\triangleright$} {\color{red}\textsf{New Project}} \textsf{$\triangleright$ Existing Directory} and find your \textit{existing} \texttt{Lab-05} folder.
+\item In the \textsf{Files} tab on the lower right-hand side of RStudio's screen, add a New Folder using the \textsf{New Folder} button right below \textsf{Files}. Name this new folder \texttt{docs}. Add two others named \texttt{data} and \texttt{results}.
+\item Reduce RStudio for a moment. Using the Windows File Explorer app, find your project as well as the repository you cloned previously. It is easiest if these are in two separate windows.
+\item Drag the lab data from \texttt{lecture-06/data/lab-05/} into your RStudio Project's \texttt{data/} subdirectory. Verify using RStudio that all of these data are accessible from within your project.
+\end{enumerate}
+
+\vspace{3mm}
+\subsection{Create an R Markdown File}
+\begin{enumerate}[label=\alph*.]
+\setcounter{enumi}{5}
+\item Back in RStudio, create a new notebook by going to \textsf{File $\triangleright$ New File $\triangleright$} {\color{red}\textsf{R Markdown}}. Choose the SLU Sociology template and save it within that \texttt{docs/} subdirectory you just created. The notebook should be named \texttt{lab-05}.
+\item Expand the YAML heading by adding your name and the assignment title ``Lab 05''.
+\item Use RMarkdown syntax to create your assignment notebook. Make sure it has an introductory section, a section for loading packages, a section for loading data, and a section for part 2 below. These sections should be second-level headings (e.g. \texttt{\#\# Introduction}). Within Parts 1 through 3, use third level headings to designate question numbers (e.g. \texttt{\#\#\# Question 1}).
+\item When you are done, ``knit'' your document by clicking the \textsf{Knit} button in the toolbar at the top of the notebook.
+\end{enumerate}
+
+\vspace{3mm}
+\subsection{Load Data}
+\begin{enumerate}[label=\alph*.]
+\setcounter{enumi}{9}
+\item Import the files \texttt{METRO\_STRUCTURE\_PctMobileHome.shp} and \\ \texttt{METRO\_BOUNDARY\_Counties.shp} into your global environment.
+\end{enumerate}
+
+\vspace{5mm}
+\section{Part 1: Data Exploration}
+The goal of this section is to create an interactive map using \texttt{leaflet}. 
+\begin{enumerate}
+\item List the variables in the mobile home data using \texttt{str()}.
+\item Produce an interactive visual preview of the data using the \texttt{mapview} package.
+\end{enumerate}
+
+\vspace{5mm}
+\section{Part 2: Static Mapping for Digital Use}
+The goal of this section is to create a static map using \texttt{ggplot2}. 
+\begin{enumerate}
+\setcounter{enumi}{2}
+\item Using a color ramp of your choice, symbolize the percentage of mobile homes in each county. Use the metro counties boundary layer overlaid on your choropleth layer to more clearly mark the county boundaries. Make sure you edit your legend's title and add a title, subtitle, and a caption to the plot. Your caption should include your name.
+\item Export your map as a \texttt{.png} file (suitable for use online or in another digital medium) at \texttt{500} dots per inch. Make sure your map is saved to the \texttt{results} subfolder of your project.
+\end{enumerate}
+
+\vspace{5mm}
+\section{Part 3: Static Mapping for Print Use}
+The goal of this section is to create a static map using \texttt{tmap}. 
+\begin{enumerate}
+\setcounter{enumi}{4}
+\item Using a color ramp of your choice (though it should be different than your prior map), symbolize the percentage of mobile homes in each county. Use the metro counties boundary layer overlaid on your choropleth layer to more clearly mark the county boundaries. Make sure you edit your legend's title and add a title, and scalebar to the plot.
+\item Export your map as a \texttt{.pdf} file (suitable for print) at \texttt{500} dots per inch. Make sure your map is saved to the \texttt{results} subfolder of your project.
+\item Adapt the code from Question 7 and add a histogram to your legend. Again, use a different color ramp for your data than you have used previously. If you have yet to use \texttt{RColorBrewer} or \texttt{viridis}, use a palette from the unused package here.
+\item Export your map as a \texttt{.pdf} file (suitable for print) at \texttt{500} dots per inch. Make sure your map is saved to the \texttt{results} subfolder of your project.
+\end{enumerate}
+
+\vspace{5mm}
+\section{Analysis Development Follow-up}
+Don't forget to knit your document when you are done!
+
+
+% =======================================================
+\end{document}

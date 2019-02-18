@@ -1,0 +1,56 @@
+\documentclass{tufte-handout}
+
+\usepackage{xcolor}
+
+% set image attributes:
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+% set hyperlink attributes
+\hypersetup{colorlinks}
+
+% set list attributes:
+\usepackage{enumerate}
+\usepackage{enumitem}
+
+% ============================================================
+
+% define the title
+\title{SOC 4650/5650: PS-03 - Opportunity Zones in the City of St. Louis}
+\author{Christopher Prener, Ph.D.}
+\date{Spring 2019}
+% ============================================================
+\begin{document}
+% ============================================================
+\maketitle % generates the title
+% ============================================================
+
+\vspace{5mm}
+\section{Directions}
+Using data from the \texttt{data/ps-03} subdirectory available in the \texttt{lecture-06} repository, create several maps using RStudio as well as a well-formatted RMarkdown document that uses ``literate programming'' techniques. Your entire project folder system should be uploaded to GitHub by Monday, March 4\textsuperscript{th} at 4:15pm.
+
+\vspace{5mm}
+\section{Analysis Development}
+The goal of this section is to create a self contained project directory with all of the data, code, map documents, results, and documentation a project needs.
+\begin{enumerate}[label=\alph*.]
+\item \textbf{Clone} the \texttt{lecture-06} repository from GitHub using GitHub Desktop if not have not already done so.
+\item Using RStudio, add an R Project to the \textit{existing} directory in your assignments repository named \texttt{PS-03}. Add the relevant subfolders, and then add the problem set data from the \texttt{lecture-06} repo into project.
+\item Back in RStudio, create a new notebook by going to \textsf{File $\triangleright$ New File $\triangleright$} {\color{red}\textsf{R Markdown}}. Choose the SLU Sociology template and save it within that \texttt{docs/} subdirectory you just created. The notebook should be named \texttt{ps-03}.
+\item Update the RMarkdown template as needed.
+\item Import data into your global environment. You will need both the race and the poverty data this time as well as the opportunity zone shapefiles. Use the data exploration tools at your disposal to explore each of the shapefiles you've imported into \texttt{R}.
+\end{enumerate}
+
+\vspace{5mm}
+\section{Part 1: Static Mapping for Digital Use}
+The goal of this section is to create a reference map using \texttt{ggplot2} that shows census tracts \textit{proposed} to be opportunity zones (and thus available for a particular set of economic development incentives) and those that were actually designated as opportunity zone tracts. These two layers should be symbolized with different hues, and placed on-top of a layer showing all tract boundaries symbolized as a ground layer. Use the city boundary as a ground layer as well to provide additional definition around the outside of the city. You do not need a legend for this part of the problem set, but should have the other map layout elements necessary (identify which hue corresponds with proposed and designated tracts in your subtitle). Export this map to your \texttt{results/} folder as a \texttt{.png} at \texttt{500} dots per inch.
+
+\vspace{5mm}
+\section{Part 2: Static Mapping for Print Use}
+The goal of this section is to create two thematic choropleth maps using \texttt{tmap} and \texttt{ggplot2} that each show the distribution of a demographic variable. The race data should be mapped using \texttt{tmap}, and the poverty data should be mapped using \texttt{ggplot2}. You should use different color ramps (one from \texttt{RColorBrewer} and one from \texttt{viridis}) for each map. Use the city boundary as a ground layer to provide additional definition around the outside of the city. You should have the other map layout elements necessary, and the maps should be exported to your \texttt{results/} folder as \texttt{.pdf} files at \texttt{500} dots per inch.
+
+\vspace{5mm}
+\section{Analysis Development Follow-up}
+Don't forget to knit your document when you are done!
+
+% ============================================================
+\end{document}
