@@ -28,6 +28,27 @@ library(RColorBrewer) # color palettes
 library(viridis)      # color palettes
 ```
 
+## Getting Help
+There are a number of ways to get help in `R`. We'll go over:
+
+* accessing help files with `?st_read`
+* searching for help
+* posting questions on the discussion forum
+
+## Analysis Development - README files
+Each assignment from here on out should include a `README` file that documents the directories and files within a project. This can be created by going to `File > New File > Text File` in RStudio. Save your new document in the top-level of your project with the name `README.md`. Be sure to include the `.md` file extension - RStudio will not automatically add it to your file.
+
+Your `README` file should include a couple of things. First, include a sentance that describes the overall purpose of your project:
+
+> The goal of the `lab-05` project is to create static maps of structures at risk from severe weather in the St. Louis metropolitan region.
+
+Then, include an outline of the key components of your project. Document what is in the `data/`, `docs/`, and `results/` subdirectories in your project. It is best to do this as an itemized list in Markdown:
+
+```markdown
+* `data/` - both shapefiles needed for the lab
+* `docs/` - the lab notebook
+* `results/` - the two maps required as final outputs
+```
 
 ## Load Data (Lecture-01 Review)
 This notebook requires the data stored in `data/example-data/`. Remember that we use `sf::st_read()` to load shapefile data:
