@@ -1,0 +1,184 @@
+---
+title: "Lab-05-Replication"
+author: "Branson Fox"
+date: '(`r format(Sys.time(), "%B %d, %Y")`)'
+output: 
+  github_document: default
+  html_notebook: default 
+---
+
+## Introduction
+This notebook replicates the results of Lab-05.
+
+## Dependencies
+This notebook requires the following packages to load our data and create maps
+
+```{r load-packages}
+# tidyverse packages
+library(ggplot2)      # data visualization
+
+# spatial packages
+library(sf)           # tools for spatial data
+library(mapview)      # interactive mapping preview
+library(tmap)         # thematic map making
+
+# other packages
+library(here)         # file path management
+library(RColorBrewer) # color palettes
+library(viridis)      # color palettes
+```
+
+## Load Data
+This notebook requires data from the Lecture-06 repository, that we should have put in the `data/` directory of our project.
+
+```{r load-data}
+counties <- st_read(here("data", "METRO_BOUNDARY_Counties", "METRO_BOUNDARY_Counties.shp"), stringsAsFactors = FALSE)
+mobileHome <- st_read(here("data", "METRO_STRUCTURE_PctMobileHome", "METRO_STRUCTURE_PctMobileHome.shp"), stringsAsFactors = FALSE)
+```
+
+## Part 1: Data Exploration
+### Question 1
+We will start by exploring the variables in our mobileHome data using the `str()` function.
+
+```{r p1-q1}
+str(mobileHome)
+```
+
+The important variable here is `MobileHome` which represents the percentage of homes that are mobile homes in each county.
+
+### Question 2
+Next, we will create an interactive preview of these data using the `mapview()` function.
+
+```{r p1-q2}
+mapview(mobileHome)
+```
+
+We can observe that these data are to the extent of the Greater St. Louis Metropolitan Area.
+
+## Part 2: Static Mapping for Digital Use
+### Question 3
+Now, we will create a static map using `ggplot2`.
+
+Here is the process broken down:
+
+1. Make a call to the `ggplot()` function
+
+2. Add layers with the `geom_sf()` function, specifying the name of your data
+
+3. Create an aesthetic mapping using `MobileHome` as the fill variable
+
+4. Set the fill to NA for the counties, and choose an appropriate color for the outline
+
+5. Add a `scale_fill_` argument. In this example, I used viridis, but you can use RColorBrewer with `scale_fill_distiller()`
+
+6. Add a name to your scale, as well as a title, subtitle and caption.
+
+7. Add the `theme_minimal()` to hide some default `ggplot2` elements
+
+8. Save the plot to a new object, and print the object after.
+
+
+```{r p2-q3}
+# create a ggplot object
+ggplot() +
+  geom_sf(data = mobileHome, mapping = aes(fill = MobileHome)) +
+  geom_sf(data = counties, fill = NA, color = "#A3A3A3") +
+  scale_fill_viridis(option = "magma", name = "Percent of\nMobile Homes", direction = -1) +
+  labs(
+    title = "Mobile Homes by County",
+    subtitle = "St. Louis Metropolitan Region",
+    caption = "Map by Branson Fox"
+  ) +
+  theme_minimal() -> ggplot_mbHome
+
+# print the object
+ggplot_mbHome
+```
+
+### Question 4
+Now, we want to save the map we created. To do this, we will use the `ggsave()` function along with `here()` to specify what we would like to save, in what format, and where.
+
+```{r p2-q4}
+ggsave(here("results", "ggplot_mbHome.png"), ggplot_mbHome, dpi = 500)
+```
+
+## Part 3: Static Mapping for Print Use
+### Question 5
+We will now create a static map for print use using the `tmap` package.
+
+Here is the process broken down:
+
+1. Use `tm_shape()` to add layers with your data
+
+2. `tm_polygons()` is used to create a thematic fill, specifying your fill variable to `col =` and then choosing your palette and style and adding a legend title.
+
+3. For the `counties` data, we add it with `tm_shape()` and specify the line width and color to `tm_borders()`
+
+4. We add a scale bar with `tm_scale_bar()`
+
+5. We add a title, remove the border and position the legend in `tm_layout()`
+
+6. Assign and print the object
+
+```{r p3-q5}
+# create tmap object
+tm_shape(mobileHome) +
+  tm_polygons(
+    col = "MobileHome",
+    palette = "viridis",
+    style = "jenks",
+    title = "Percent of\nMobile Homes"
+    ) +
+tm_shape(counties) +
+  tm_borders(lwd = 3, col = "#666666") +
+  tm_scale_bar() +
+  tm_layout(
+    title = "Mobile Homes",
+    frame = FALSE,
+    legend.outside = TRUE,
+    legend.position = c("left", "bottom")) -> tmap_mbHome
+  
+# print object
+tmap_mbHome
+```
+
+### Question 6
+Now, we will save the map we created with `tmap_save`. Again, we will use `here()` to specify where the file should be exported.
+
+```{r p3-q6}
+tmap_save(tm = tmap_mbHome, filename = here("results", "tmap_mbHome.pdf"), dpi = 500)
+```
+
+### Question 7
+We will create the same map again, but change our color palette and add a histogram this time. We will use of the RColorBrewer palettes, in this example `PuBu` and add the argument `legend.hist = TRUE` to the `tm_polygons()` function.
+
+```{r p3-q7}
+# create tmap object
+tm_shape(mobileHome) +
+  tm_polygons(
+    col = "MobileHome",
+    palette = "PuBu",
+    style = "jenks",
+    title = "Percent of\nMobile Homes",
+    legend.hist = TRUE
+    ) +
+tm_shape(counties) +
+  tm_borders(lwd = 3, col = "#666666") +
+  tm_scale_bar() +
+  tm_layout(
+    title = "Mobile Homes",
+    frame = FALSE,
+    legend.outside = TRUE,
+    legend.position = c("left", "bottom")) -> tmap_mbHome_hist
+  
+# print object
+tmap_mbHome_hist
+```
+
+### Question 8
+We will save the map in the same format as before, but with a different name this time.
+
+```{r p3-q8}
+tmap_save(tm = tmap_mbHome_hist, filename = here("results", "tmap_mbHome_hist.pdf"), dpi = 500)
+```
+
