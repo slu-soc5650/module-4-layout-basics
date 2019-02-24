@@ -1,0 +1,86 @@
+\documentclass{tufte-handout}
+
+\usepackage{xcolor}
+
+% set image attributes:
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+% set hyperlink attributes
+\hypersetup{colorlinks}
+
+% set list attributes:
+\usepackage{enumerate}
+\usepackage{enumitem}
+
+% ============================================================
+
+% define the title
+\title{SOC 4650/5650: PS-02 - Opportunity Zones in the City of St. Louis}
+\author{Christopher Prener, Ph.D.}
+\date{Spring 2019}
+% ============================================================
+\begin{document}
+% ============================================================
+\maketitle % generates the title
+% ============================================================
+
+\vspace{5mm}
+\section{Directions}
+Using data from the \texttt{data/ps-02} subdirectory available in the \texttt{lecture-05} repository, create several maps using RStudio as well as a well-formatted RMarkdown document that uses ``literate programming'' techniques. Your entire project folder system should be uploaded to GitHub by Monday, February 25\textsuperscript{th} at 4:15pm.
+
+\vspace{5mm}
+\section{Analysis Development}
+The goal of this section is to create a self contained project directory with all of the data, code, map documents, results, and documentation a project needs.
+
+\vspace{3mm}
+\subsection{Download Data}
+\begin{enumerate}[label=\alph*.]
+\item \textbf{Clone} the \texttt{lecture-05} repository from GitHub using GitHub Desktop.\sidenote{If you are not sure where your GitHub Desktop data has download to on the computer, you can \textsf{right click} on the repo's entry in GitHub Desktop and have it take you to the repo in Windows File Explorer. By default, this should be within your \texttt{Documents/} directory.}
+\end{enumerate}
+
+\vspace{3mm}
+\subsection{Create a Project Folder System}
+\begin{enumerate}[label=\alph*.]
+\setcounter{enumi}{1}
+\item Using RStudio, add an R Project to the \textit{existing} directory in your assignments repository named \texttt{Lab-04}. To do this, you will want to go to: \textsf{File $\triangleright$} {\color{red}\textsf{New Project}} \textsf{$\triangleright$ Existing Directory} and find your \textit{existing} \texttt{Lab-04} folder.
+\item In the \textsf{Files} tab on the lower right-hand side of RStudio's screen, add a New Folder using the \textsf{New Folder} button right below \textsf{Files}. Name this new folder \texttt{docs}. Add two others named \texttt{data} and \texttt{results}.
+\item Reduce RStudio for a moment. Using the Windows File Explorer app, find your project as well as the repository you cloned previously. It is easiest if these are in two separate windows.
+\item Drag the lab data from \texttt{lecture-05/data/ps-02/} into your RStudio Project's \texttt{data/} subdirectory. Verify using RStudio that all of these data are accessible from within your project.
+\end{enumerate}
+
+\vspace{3mm}
+\subsection{Create an R Markdown File}
+\begin{enumerate}[label=\alph*.]
+\setcounter{enumi}{5}
+\item Back in RStudio, create a new notebook by going to \textsf{File $\triangleright$ New File $\triangleright$} {\color{red}\textsf{R Markdown}}. Choose the SLU Sociology template and save it within that \texttt{docs/} subdirectory you just created. The notebook should be named \texttt{lab-04}.
+\item Expand the YAML heading by adding your name and the assignment title ``Lab 04''.
+\item Use RMarkdown syntax to create your first assignment notebook! Make sure it has an introductory section, a section for loading packages, a section for loading data, and a section for part 2 below. These sections should be second-level headings (e.g. \texttt{\#\# Introduction}). 
+\item When you are done, ``knit'' your document by clicking the \textsf{Knit} button in the toolbar at the top of the notebook.
+\end{enumerate}
+
+\vspace{3mm}
+\subsection{Load Data}
+\begin{enumerate}[label=\alph*.]
+\setcounter{enumi}{9}
+\item Import data from \texttt{lecture-05/data/PS-02} into your global environment. You will need both the race and the poverty data this time. Use the data exploration tools at your disposal to explore each of the shapefiles you've imported into \texttt{R}.
+\end{enumerate}
+
+\vspace{5mm}
+\section{Part 1: Static Mapping for Digital Use}
+The goal of this section is to create a reference map using \texttt{ggplot2} that shows census tracts \textit{proposed} to be opportunity zones (and thus available for a particular set of economic development incentives) and those that were actually designated as opportunity zone tracts. These two layers should be symbolized with different hues, and placed on-top of a layer showing all tract boundaries symbolized as a ground layer. Use the city boundary as a ground layer as well to provide additional definition around the outside of the city. You do not need a legend for this part of the problem set, but should have the other map layout elements necessary (identify which hue corresponds with proposed and designated tracts in your subtitle). Export this map to your \texttt{results/} folder as a \texttt{.png} at \texttt{500} dots per inch.
+
+\vspace{5mm}
+\section{Part 2: Interactive Mapping}
+The goal of this section is to create an interactive map using \texttt{leaflet}. Feel free to select either the race or the poverty data. If you select the race data, map the proportion of African Americans living in each census tract. If you select poverty, map the proportion of individuals living below the poverty line. \textit{Both variables are already normalized because they are proportions}. Use a basemap and color palette of your choice, and make sure the map contains the appropriate features we've discussed for \texttt{leaflet}. For popups, use the Census Tract ID numbers as well as the proportion of whatever demographic variable you are mapping.\sidenote{\textit{Hint:} There is no need to export this - make sure you have PhantomJS installed on your computer and it will be included in your final, knit document.}
+
+\vspace{5mm}
+\section{Part 3: Static Mapping for Print Use}
+The goal of this section is to create a thematic choropleth map using \texttt{tmap} that shows the distribution of a demographic variable. Pick whatever variable you \textit{did not} use for Part 2, and use a different color ramp than you used for that map. Use the city boundary as a ground layer to provide additional definition around the outside of the city. You should have the other map layout elements necessary, and the map should be exported to your \texttt{results/} folder as a \texttt{.pdf} at \texttt{500} dots per inch.
+
+\vspace{5mm}
+\section{Analysis Development Follow-up}
+Don't forget to knit your document when you are done!
+
+% ============================================================
+\end{document}
