@@ -1,0 +1,32 @@
+---
+title: "Lecture-06 Points and Facets"
+author: "Christopher Prener, Ph.D."
+date: '(`r format(Sys.time(), "%B %d, %Y")`)'
+output: 
+  github_document: default
+  html_notebook: default 
+---
+
+## Introduction
+This notebook covers basic map production in `R` using a variety of tools for producing *static* maps, specifically focusing on working with point data and making facets (i.e. small multiples).
+
+## Dependencies
+This notebook requires a variety of packages for working with spatial data:
+
+```{r load-packages}
+# tidyverse packages
+library(ggplot2)      # plotting data
+
+# spatial packages
+library(mapview)      # preview spatial data
+library(tmap)         # map layouts
+library(sf)           # spatial data tools
+
+# other packages
+library(here)         # file path management
+library(RColorBrewer) # color palettes
+library(viridis)      # color palettes
+```
+
+
+
