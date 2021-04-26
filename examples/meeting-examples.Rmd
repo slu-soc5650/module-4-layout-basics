@@ -1,0 +1,195 @@
+---
+title: "Meeting Examples"
+author: "Christopher Prener, Ph.D."
+date: '(`r format(Sys.time(), "%B %d, %Y")`)'
+output: 
+  github_document: default
+  html_notebook: default 
+---
+
+## Introduction
+This notebook covers basic map production in `R` using a variety of tools for producing *static* maps (as opposed to the interactive maps `leaflet` makes).
+
+## Dependencies
+This notebook requires a variety of packages for working with spatial data. We'll also be using a new package called `cowplot` - make sure you install it first using:
+
+```r
+install.packages("cowplot")
+```
+
+Once that is installed, we can load our packages:
+
+```{r load-packages}
+# tidyverse packages
+library(dplyr)        # data wrangling
+library(ggplot2)      # plotting data
+
+# spatial packages
+library(mapview)      # preview spatial data
+library(tigris)       # access TIGER/Line data
+library(tmap)         # map layouts
+library(sf)           # spatial data tools
+
+# other packages
+library(cowplot)      # map theme
+library(here)         # file path management
+library(RColorBrewer) # color palettes
+library(viridis)      # color palettes
+```
+
+## Load Data and Re-project
+This notebook requires the data stored in `data/example-data/`. Remember that we use `sf::st_read()` to load shapefile data. We'll combine our `st_read()` call with `st_transform()` in a pipeline, and for our `city` data, we'll subset down to a single column.
+
+```{r load-data}
+# city boundary
+city <- st_read(here("data", "example-data", "STL_BOUNDARY_City", 
+             "STL_BOUNDARY_City.shp"), stringsAsFactors = FALSE) %>%
+  st_transform(crs = 26915) %>%
+  select(NAMELSAD)
+
+# fire stations
+fire <- st_read(here("data", "example-data", "STL_PUBLICSAFTEY_FireStations", 
+             "STL_PUBLICSAFTEY_FireStations.shp"), stringsAsFactors = FALSE) %>%
+  st_transform(crs = 26915)
+```
+
+## Load and Geoprocess Some Additional Data
+In addition, we'll review how to access, clean, and geoprocess data from the Census Bureau's TIGER/Line database. The following pipeline accomplishes these tasks:
+
+  1. First, we download the primary roads data for 2019, *then*
+  2. we subset columns down to just the `FULLNAME` column, *then*
+  3. we re-project the data to UTM 15N, *then*
+  4. we geoprocess the data so that we retain only the highways within the City of St. Louis, *then*
+  5. we subset columns again to just the `FULLNAME` column, *then*
+  6. we group our data based on the highway name, *then*
+  7. we summarize them to combine line segments into single features per highway name, *then*
+  8. we extract our geometry collection.
+  
+The results are assigned onto the `highways` object.
+
+```{r create-highways}
+highways <- primary_roads(year = 2019) %>%
+  select(FULLNAME) %>%
+  st_transform(crs = 26915) %>%
+  st_intersection(., city) %>%
+  select(FULLNAME) %>%
+  group_by(FULLNAME) %>%
+  summarise() %>%
+  st_collection_extract(type = "LINESTRING")
+```
+
+Once we have created these data, we can use `mapview()` in the console to preview these data.
+
+```r
+mapview(highways)
+```
+
+## Exploring the Data
+We can also use `mapview()` to explore our point data:
+
+```r
+mapview(fire)
+```
+
+We'll be focusing on the `stationID` variable (to simulate mapping point data with a quantitative attribute).
+
+## Final Static Mapping Skills
+### Using `ggplot2`
+To review, we'll break down the `ggplot` code we have been using to this point. We use `geom_sf()` to map spatial data layers, customizing their appearance with `fill` and `color`. For our fire stations, we'll fill in the circle symbols based on the station number. To do this, we need to create an aesthetic mapping, and then we use `scale_fill_distiller()` to assign a ColorBrewer palette. Finally, we use `labs()` to generate a title, subtitle, and caption.
+
+```{r ggplot2-review}
+## create ggplot2 object
+p <- ggplot() +
+  geom_sf(data = city, fill = "#ffffff", color = "#000000", size = .5) +
+  geom_sf(data = highways, fill = "#2a2a2a") +
+  geom_sf(data = fire, mapping = aes(fill = stationID), shape = 21, size = 2) +
+  scale_fill_distiller(palette = "Reds", trans = "reverse", name = "Station") +
+  labs(
+    title = "Fire Department Stations",
+    subtitle = "St. Louis, MO",
+    caption = "Data via the St. Louis Fire Department\nMap by Christopher Prener, PhD"
+  )
+
+## print map
+p
+```
+
+The final skill I want to highlight today involves using themes for `ggplot2`. These can be used for any plot to alter the overall appearance of the plot itself (colors, fonts, etc.). For maps specifically, they can be used to modify the background and the appearance of grid lines. We'll start with `theme_minimal()` from the `ggplot2` package, which removes the background but retains the grid lines:
+
+```{r ggplot2-theme-1}
+p + theme_minimal()
+```
+
+Other options are `theme_void()` from the `ggplot2` package, which will remove both the background and the grids:
+
+```{r ggplot2-theme-2}
+p + theme_void()
+```
+
+A final example uses `cowplot`'s `theme_map()` theme, which I like because of the changes it makes to the font sizes. Otherwise it is pretty similar to `theme_void()`:
+
+```{r ggplot2-theme-3}
+p + theme_map()
+```
+
+All of the elements of themes can be customized with a bit of googling and experimentation.
+
+### Using `tmap`
+We can achieve the same effects using the `tmap` package. A basic point map would use `tm_shape()` twice, once to add the city background and once to add the fire stations. We use `tm_polygons()` to customize the appearance of the city layer and `tm_symbols()` to customize the appearance of the points. Similarly, we can use `tm_lines()` to customize line elements.
+
+```{r tmap-base}
+tm_shape(city) +
+  tm_polygons(col = "#ffffff", lwd = .5) +
+  tm_shape(highways) +
+  tm_lines(col = "#2a2a2a") +
+  tm_shape(fire) +
+  tm_symbols(col = "#8b0000", size = .5)
+```
+
+If we wanted to mirror the aesthetic mappings from `ggplot2`, we can adjust our `tmap` call slightly. Instead of declaring a color in `tm_symbols(col)`, we specify a palette and a breaks style:
+
+```{r tmap-breaks}
+## create map
+p2 <- tm_shape(city) +
+  tm_polygons(col = "#ffffff", lwd = .75) +
+  tm_shape(highways) +
+  tm_lines(col = "#2a2a2a") +
+  tm_shape(fire) +
+  tm_symbols(col = "stationID", 
+             palette = "Reds", 
+             style = "jenks",
+             size = .5)
+
+## print map
+p2
+```
+
+Finally, we'll use `tm_scale_bar()` and `tm_layout()` to finish customizing our project:
+
+```{r tmap-layout}
+## create map
+p3 <- p2 +
+  tm_scale_bar() +
+  tm_layout(
+    title = "St. Louis Fire\nDepartment Stations",
+    frame = FALSE,
+    legend.outside = TRUE,
+    legend.position = c("left", "bottom")) 
+
+## print map
+p3
+```
+
+There is a `tmap_save()` function that corresponds to `ggsave()` for saving plots:
+
+```{r save-tmap}
+tmap_save(tm = p3, filename = here("results", "fire_stations.png"), dpi = 300)
+```
+
+
+```{r move-to-docs, include=FALSE}
+# you do need to include this in any notebook you create for this class
+fs::file_copy(here::here("examples", "meeting-examples.nb.html"), 
+              here::here("docs", "index.nb.html"), 
+              overwrite = TRUE)
+```
