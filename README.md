@@ -1,13 +1,13 @@
-module-5-static <img src="https://slu-soc5650.github.io/images/icon_hu137d436a85c84cab921c9c47edaed5ef_12382_192x192_fill_lanczos_center_2.png" align="right" />
+module-4-layout-basics <img src="https://slu-soc5650.github.io/images/icon_hu137d436a85c84cab921c9c47edaed5ef_12382_192x192_fill_lanczos_center_2.png" align="right" />
 ===========================================================
-[![](https://img.shields.io/badge/semester-spring%2021-blue.svg)](https://github.com/slu-soc5650/module-5-static)
-[![](https://img.shields.io/badge/release-full-brightgreen.svg)](https://github.com/slu-soc5650/module-5-static)
-[![](https://img.shields.io/github/release/slu-soc5650/module-5-static.svg?label=version)](https://github.com/slu-soc5650/module-5-static/releases)
-[![](https://img.shields.io/github/last-commit/slu-soc5650/module-5-static.svg)](https://github.com/slu-soc5650/module-5-static/commits/master)
-[![](https://img.shields.io/github/repo-size/slu-soc5650/module-5-static.svg)](https://github.com/slu-soc5650/module-5-static)
+[![](https://img.shields.io/badge/semester-spring%2021-blue.svg)](https://github.com/slu-soc5650/module-4-layout-basics)
+[![](https://img.shields.io/badge/release-full-brightgreen.svg)](https://github.com/slu-soc5650/module-4-layout-basics)
+[![](https://img.shields.io/github/release/slu-soc5650/module-4-layout-basics.svg?label=version)](https://github.com/slu-soc5650/module-4-layout-basics/releases)
+[![](https://img.shields.io/github/last-commit/slu-soc5650/module-4-layout-basics.svg)](https://github.com/slu-soc5650/module-4-layout-basics/commits/master)
+[![](https://img.shields.io/github/repo-size/slu-soc5650/module-4-layout-basics.svg)](https://github.com/slu-soc5650/module-4-layout-basics)
 
-## Module 5 - Map Products with R
-These materials correspond to the twelfth course meeting of SOC 4650 and SOC 5650, which is focused on working with `ggplot2` and `tmap` to finalize maps in `R`.
+## Module 4 - Map Products with ArcGIS Pro
+These materials correspond to the twelfth course meeting of SOC 4650 and SOC 5650, which is focused on working with ArcGIS Pro to finalize maps in R.
 
 ## Lesson Quick Start
 ### Install Software
@@ -21,7 +21,7 @@ install.packages("usethis")
 You can download this lesson to your Desktop easily using `usethis`:
 
 ```r
-usethis::use_course("https://github.com/slu-soc5650/module-5-static/archive/master.zip")
+usethis::use_course("https://github.com/slu-soc5650/module-4-layout-basics/archive/master.zip")
 ```
 
 By using `usethis::use_course`, all of the lesson materials will be downloaded to your computer, automatically extracted, and saved to your desktop. You can then open the `.Rproj` file to get started.
